@@ -1,53 +1,53 @@
-name: Deploy to AWS EC2
+# name: Deploy to AWS EC2
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
 
-    steps:
-      # 코드 가져오기
-      - name: Checkout code
-        uses: actions/checkout@v3
+#     steps:
+#       # 코드 가져오기
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      # Node 설치
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+#       # Node 설치
+#       - name: Setup Node
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: 16
 
-      # 의존성 설치
-      - name: Install dependencies
-        run: |
-          cd GooApp_BE
-          npm ci
+#       # 의존성 설치
+#       - name: Install dependencies
+#         run: |
+#           cd GooApp_BE
+#           npm ci
 
-      # 빌드
-      - name: Build
-        run: |
-          cd GooApp_BE
-          npm run build
+#       # 빌드
+#       - name: Build
+#         run: |
+#           cd GooApp_BE
+#           npm run build
 
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
+#   deploy:
+#     needs: test
+#     runs-on: ubuntu-latest
 
-    steps:
-      # 서버로 배포
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.AWS_HOST }}
-          username: ${{ secrets.AWS_USER }}
-          key: ${{ secrets.AWS_KEY }}
-          port: 22
-          script: |
-            cd ~/GooApp/GooApp_BE
-            git pull origin main
-            npm ci
-            npm run build
-            pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
+#     steps:
+#       # 서버로 배포
+#       - name: Deploy via SSH
+#         uses: appleboy/ssh-action@v0.1.7
+#         with:
+#           host: ${{ secrets.AWS_HOST }}
+#           username: ${{ secrets.AWS_USER }}
+#           key: ${{ secrets.AWS_KEY }}
+#           port: 22
+#           script: |
+#             cd ~/GooApp/GooApp_BE
+#             git pull origin main
+#             npm ci
+#             npm run build
+#             pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
