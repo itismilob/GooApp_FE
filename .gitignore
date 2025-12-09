@@ -80,3 +80,4 @@ andriod/
 ios/
 
 */.env
+*.pem
